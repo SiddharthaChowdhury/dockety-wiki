@@ -1,0 +1,13 @@
+input[type=text], textarea, input[type=password], input[type=email]{
+	border-radius:0px !important;
+}
+button, .btn{
+	border-radius:0px !important;
+}
+.error{
+	font-weight:lighter !important;
+	color:#DF013A !important;
+}
+.hide-this{
+	display: none;
+}

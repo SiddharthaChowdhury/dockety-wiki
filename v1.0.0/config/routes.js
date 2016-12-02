@@ -32,9 +32,9 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
 
-  '/': {
-    view: 'homepage'
-  }
+  '/': 'DocumentController.view',
+  '/documents': 'DocumentController.view',
+  'post /createNew': 'DocumentController.createNew'
 
   /***************************************************************************
   *                                                                          *
