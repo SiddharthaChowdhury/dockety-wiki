@@ -30,15 +30,15 @@
     text-decoration: none;
 }
 
-#tree  li > a:before {
+#tree  li > a:after {
     content: '+';
-    padding-right: 4px;
+    padding-left: 4px;
     font-weight: bold;
 }
 
-#tree  li >a.active:before {
+#tree  li >a.active:after {
     content: '-';
-    padding-right: 4px;
+    padding-left: 4px;
     font-weight: bold;
 }
 
@@ -47,12 +47,15 @@
     display: none;
 }
 
+.get-context-menu{
+    cursor: pointer;
+}
 </style>
 <section id="document_view">
     <div class="container">
         <div class="row text-right">
             <h2>Documentation</h2>
-            <small>Create directory and add your contribution here.</small>
+            <small>Document your effort with ease.</small>
         </div>
         <hr>
         <% flash.get('success').forEach(function (message) { %>
@@ -72,23 +75,18 @@
                 <div class="col-md-12">
                     <h3 class="text-center">Welcome to Dockety-Wiki!</h3>
                     <h4>
-                        Lets start with creating a directory
-                        <a href="#" class="create_new_btn btn btn-default pull-right" data-type="dir" data-path="/root" data-toggle="modal" data-target="#createNewModal">Create Directory</a>
+                        Lets start with creating your first document.
+                        <a href="#" class="create_new_btn btn btn-default pull-right" data-path="root" data-toggle="modal" data-target="#createNewModal">Create Directory</a>
                     </h4>
-                    <small>Directory is a container within which you can create new documents.</small>
+                    <small></small>
                 </div>
             <%}else{%>
-
                 <div class="col-md-4" id="rendered-tree-cont">
                     <div class="hide-this" id="tree-data-json">
                         <%= JSON.stringify(data) %>
                     </div>
-
-                    <!-- <ul id="tree"><li><a href="#">Food</a><ul><li><a href="#">Fruit</a><ul><li><a href="#">Citrus</a><ul><li>Mango</li></ul></li></ul></li></ul></li><li>Cloths</li></ul> -->
-    
                 </div>
             <%}%>
-             
         </div>
     </div>
 </section>
@@ -96,8 +94,8 @@
     <div class="context-box">
         <span class="pull-right _close"><i class="glyphicon glyphicon-remove-circle"></i></span><br>
         <ul class="list-group">
-            <a href="#" class="create_new_btn" data-type="dir" data-toggle="modal" data-path="" data-target="#createNewModal"><li class="list-group-item">Directory</li></a>
-            <a href="#" class="create_new_btn" data-type="file" data-toggle="modal" data-path="" data-target="#createNewModal"><li class="list-group-item">File</li></a>
+            <a href="#" class="create_new_btn" data-toggle="modal" data-path="" data-target="#createNewModal"><li class="list-group-item">Directory</li></a>
+            <a href="#" class="create_new_btn" data-toggle="modal" data-path="" data-target="#createNewModal"><li class="list-group-item">File</li></a>
         </ul>
     </div>
 
@@ -111,7 +109,6 @@
                         <h4 class="modal-title modal_mike">Modal Header</h4>
                     </div>
                     <div class="modal-body">
-                        <input type="hidden" name="type" id="doctype">
                         <input type="hidden" name="path" id="path">
                         <div class="form-group">
                             <label for="title">Title:</label>

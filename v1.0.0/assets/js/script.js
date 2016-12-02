@@ -1,13 +1,17 @@
 $(function(){
     // Preload TREE
     renderableTree = function(data , parent){
-        // console.log(parent)
-        
-
         for(var i in data){
             if(data[i].children.length == 0){
                 var li = document.createElement('li');
-                li.innerHTML = data[i].title;
+                
+                var span = document.createElement('span');
+                span.setAttribute('class', 'get-context-menu glyphicon glyphicon-cog')
+                span.setAttribute('data-path', data[i].path);
+                li.append(span);
+                var span2 = document.createElement('span');
+                span2.innerHTML = ' '+data[i].title;
+                li.append(span2);
                 parent.append(li);
                 return parent;
             }
@@ -15,9 +19,14 @@ $(function(){
                 var ul = document.createElement('ul');
                 var li = document.createElement('li');
                 var a = document.createElement('a');
-                a.innerHTML = data[i].title;
+                a.innerHTML = " "+data[i].title;
                 a.setAttribute("href", "#");
+                var span = document.createElement('span');
+                span.setAttribute('class', 'get-context-menu glyphicon glyphicon-cog')
+                span.setAttribute('data-path', data[i].path);
+                li.append(span);
                 li.append(a);
+
                 li.append(ul);
                 parent.append(li);
                 renderableTree(data[i].children, ul);
@@ -26,14 +35,13 @@ $(function(){
     }
 
     var treeJson = JSON.parse($('#tree-data-json').text());
-    // console.log(treeJson);
     var ul = document.createElement('ul');
     ul.setAttribute("id", "tree");
     var tree =  renderableTree(treeJson, ul);
     $('#rendered-tree-cont').append(tree)
     var MenuTree = {
         collapse: function(element) {
-            element.slideToggle(600);
+            element.slideToggle(200);
         },
         walk: function() {
             $('a', '#tree').each(function() {
@@ -41,22 +49,11 @@ $(function(){
                 var $li = $a.parent();
                 if ($a.next().is('ul')) {
                     var $ul = $a.next();
-                    // console.log($a);
                     $a[0].addEventListener('click', function(e){
                         e.preventDefault();
-                        // alert("sdsdsd")
                         MenuTree.collapse($ul);
                         $a.toggleClass('active');
-                    })
-                    // $(document).on('click', $a, function(e){
-                        // e.preventDefault();
-                        // alert("sdsdsd")
-                        // MenuTree.collapse($ul);
-                        // $a.toggleClass('active');
-                    // })
-                    // $a.click(function(e) {
-                        
-                    // });
+                    });
                 }
             });
         }
