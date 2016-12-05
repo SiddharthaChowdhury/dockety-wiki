@@ -1,12 +1,12 @@
 $(function(){
     // Preload TREE
-    // http://jsfiddle.net/gabrieleromanato/Te6yX/
+    // https://jsfiddle.net/Austin4Silvers/jjn9rh70/10/
     var MenuTree = {
         collapse: function(element) {
             element.slideToggle(200);
         },
         walk: function() {
-            $('a', '#tree').each(function() {
+            $('.tree-parent-anchor', '#tree').each(function() {
                 var $a = $(this);
                 var $li = $a.parent();
                 if ($a.next().is('ul')) {

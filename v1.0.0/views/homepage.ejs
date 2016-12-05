@@ -20,9 +20,17 @@
         cursor:pointer;
         float:right;
     }
+
+    .get_context_menu{
+        cursor: pointer;
+        color: #B1B1B1;
+    }
+    .get_context_menu:hover, .get_context_menu:active{
+        color: #333;
+    }
  /*====== TREE ======*/
-/*http://jsfiddle.net/gabrieleromanato/Te6yX/*/
-#tree, ul{
+/*https://jsfiddle.net/Austin4Silvers/jjn9rh70/10/*/
+#tree {
     margin: 2em 0 0 2em;
     width: 20em;
     list-style-type: none;
@@ -31,30 +39,32 @@
 #tree > li {
     padding-bottom: 3px;
     margin-bottom: 0.5em;
-    /*border-bottom: 1px solid #ccc;*/
 }
 
 #tree  li > a {
-    color: #000;
+    color: #333;
     text-decoration: none;
+
 }
 
-#tree  li > a:before {
+#tree  li > a:after {
     content: '+';
-    padding-right: 4px;
+    padding-left: 4px;
     font-weight: bold;
 }
 
-#tree  li >a.active:before {
+#tree  li >a.active:after {
     content: '-';
-    padding-right: 4px;
+    padding-left: 4px;
     font-weight: bold;
 }
 
 #tree li ul {
     margin: 0.5em 0 0.5em 2em;
     display: none;
+    list-style-type: none;
 }
+
 
 </style>
 <section id="document_view">
@@ -90,20 +100,22 @@
                 <div class="col-md-4" >
                     <ul id="tree">
                         <li>
-                        <a href="#">Root</a>
+                        <span class="get_context_menu"><i class="glyphicon glyphicon-cog"></i></span>
+                        <a href="#" class='tree-parent-anchor'>Root</a>
                         <%  function get_tree(tree) { %>
                             <ul>
                             <%  for(var i in tree){ %>
                                     <%if(tree[i].children.length > 0){ %>                                       
                                         <li>
-                                            <a href="#"><%= tree[i].title %></a>
+                                            <span class="get_context_menu"><i class="glyphicon glyphicon-cog"></i></span>
+                                            <a href="#" class='tree-parent-anchor'> <%= tree[i].title %></a>
                                             <% get_tree(tree[i].children); %>
                                         </li>
                                     <% } else { %>
-                                        <li><%= tree[i].title %> </li>
+                                        <li><span class="get_context_menu"><i class="glyphicon glyphicon-cog"></i> </span><%= tree[i].title %> </li>
                                     <% } %>
-                                   
-                            <%  } %> 
+                                        
+                            <% } %> 
                             </ul>
                         <% } get_tree(tree); %>
                         </li>
