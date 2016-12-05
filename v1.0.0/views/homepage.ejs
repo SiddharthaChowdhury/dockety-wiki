@@ -1,28 +1,37 @@
 <style type="text/css">
     .context-box{
-        width:200px;
-        position: absolute;
-        padding: 15px 20px;
+        display: -webkit-flex;
+        display: flex;
         background-color:#F2F2F2;
         box-shadow: 10px 10px 5px #888888;
+        padding: 5px 10px;
         display: none;
+        flex-direction: row;
+    }
+    .context-box .context-btns{
+        text-decoration: none;
+        color: #333;
+        padding: 5px 20px;
+    }
+    .context-box .context-btns i{
+        margin-right: 20px;
     }
     ._close{
         cursor:pointer;
         float:right;
     }
  /*====== TREE ======*/
-
- #tree, ul {
+/*http://jsfiddle.net/gabrieleromanato/Te6yX/*/
+#tree, ul{
     margin: 2em 0 0 2em;
     width: 20em;
-     list-style-type: none;
+    list-style-type: none;
 }
 
 #tree > li {
     padding-bottom: 3px;
     margin-bottom: 0.5em;
-    /* border-bottom: 1px solid #ccc; */
+    /*border-bottom: 1px solid #ccc;*/
 }
 
 #tree  li > a {
@@ -30,15 +39,15 @@
     text-decoration: none;
 }
 
-#tree  li > a:after {
+#tree  li > a:before {
     content: '+';
-    padding-left: 4px;
+    padding-right: 4px;
     font-weight: bold;
 }
 
-#tree  li >a.active:after {
+#tree  li >a.active:before {
     content: '-';
-    padding-left: 4px;
+    padding-right: 4px;
     font-weight: bold;
 }
 
@@ -47,9 +56,6 @@
     display: none;
 }
 
-.get-context-menu{
-    cursor: pointer;
-}
 </style>
 <section id="document_view">
     <div class="container">
@@ -71,20 +77,37 @@
           </div>
         <% }) %>
         <div class="row">
-            <%if(data.length == 0){%>
+            <%if(tree.length == 0){%>
                 <div class="col-md-12">
                     <h3 class="text-center">Welcome to Dockety-Wiki!</h3>
                     <h4>
                         Lets start with creating your first document.
-                        <a href="#" class="create_new_btn btn btn-default pull-right" data-path="root" data-toggle="modal" data-target="#createNewModal">Create Directory</a>
+                        <a href="#" class="create_new_btn btn btn-default pull-right" data-path="/root" data-toggle="modal" data-target="#createNewModal"><i class="glyphicon glyphicon-home"></i> Create Document at root</a>
                     </h4>
                     <small></small>
                 </div>
             <%}else{%>
-                <div class="col-md-4" id="rendered-tree-cont">
-                    <div class="hide-this" id="tree-data-json">
-                        <%= JSON.stringify(data) %>
-                    </div>
+                <div class="col-md-4" >
+                    <ul id="tree">
+                        <li>
+                        <a href="#">Root</a>
+                        <%  function get_tree(tree) { %>
+                            <ul>
+                            <%  for(var i in tree){ %>
+                                    <%if(tree[i].children.length > 0){ %>                                       
+                                        <li>
+                                            <a href="#"><%= tree[i].title %></a>
+                                            <% get_tree(tree[i].children); %>
+                                        </li>
+                                    <% } else { %>
+                                        <li><%= tree[i].title %> </li>
+                                    <% } %>
+                                   
+                            <%  } %> 
+                            </ul>
+                        <% } get_tree(tree); %>
+                        </li>
+                    </ul>
                 </div>
             <%}%>
         </div>
@@ -92,11 +115,13 @@
 </section>
    <!-- Context-menu -->
     <div class="context-box">
+        <!-- <input type="hidden" name="path"> -->
+        <!-- <input type="hidden" name="title"> -->
         <span class="pull-right _close"><i class="glyphicon glyphicon-remove-circle"></i></span><br>
-        <ul class="list-group">
-            <a href="#" class="create_new_btn" data-toggle="modal" data-path="" data-target="#createNewModal"><li class="list-group-item">Directory</li></a>
-            <a href="#" class="create_new_btn" data-toggle="modal" data-path="" data-target="#createNewModal"><li class="list-group-item">File</li></a>
-        </ul>
+        <a class="context-btns" href="#"><div><i class="glyphicon glyphicon-search"></i> View</div></a>
+        <a class="context-btns create_new_btn" href="#" data-path="" data-toggle="modal" data-target="#createNewModal"><div><i class="glyphicon glyphicon-plus"></i> New</div></a>
+        <a class="context-btns" href="#"><div><i class="glyphicon glyphicon-pencil"></i> Edit</div></a>
+        <a class="context-btns" href="#"><div><i class="glyphicon glyphicon-remove"></i> Delete</div></a>
     </div>
 
     <!-- Modal -->

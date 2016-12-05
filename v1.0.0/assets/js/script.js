@@ -1,44 +1,6 @@
 $(function(){
     // Preload TREE
-    renderableTree = function(data , parent){
-        for(var i in data){
-            if(data[i].children.length == 0){
-                var li = document.createElement('li');
-                
-                var span = document.createElement('span');
-                span.setAttribute('class', 'get-context-menu glyphicon glyphicon-cog')
-                span.setAttribute('data-path', data[i].path);
-                li.append(span);
-                var span2 = document.createElement('span');
-                span2.innerHTML = ' '+data[i].title;
-                li.append(span2);
-                parent.append(li);
-                return parent;
-            }
-            else{
-                var ul = document.createElement('ul');
-                var li = document.createElement('li');
-                var a = document.createElement('a');
-                a.innerHTML = " "+data[i].title;
-                a.setAttribute("href", "#");
-                var span = document.createElement('span');
-                span.setAttribute('class', 'get-context-menu glyphicon glyphicon-cog')
-                span.setAttribute('data-path', data[i].path);
-                li.append(span);
-                li.append(a);
-
-                li.append(ul);
-                parent.append(li);
-                renderableTree(data[i].children, ul);
-            }
-        }
-    }
-
-    var treeJson = JSON.parse($('#tree-data-json').text());
-    var ul = document.createElement('ul');
-    ul.setAttribute("id", "tree");
-    var tree =  renderableTree(treeJson, ul);
-    $('#rendered-tree-cont').append(tree)
+    // http://jsfiddle.net/gabrieleromanato/Te6yX/
     var MenuTree = {
         collapse: function(element) {
             element.slideToggle(200);
@@ -61,18 +23,6 @@ $(function(){
     MenuTree.walk();
 
 	if($('#document_view').length == 1){
-		 // --context_menu implementation
-        var x = new _contextMenu();              
-        x.config({                               
-              contextBoxClass : 'context-box',
-              clickedOnClass : 'trigger_context_menu',
-              closeBtnClass : '_close',
-              // popupBesideClass : 'className',
-              disableErrorLog: true,
-              box_position : 'bot-left',
-              displacement_px : [10,0]
-        })
-        x.run();  
 
         $('.create_new_btn').click(function(e){
             var type = $(this).attr('data-type');

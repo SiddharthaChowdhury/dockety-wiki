@@ -3,6 +3,7 @@ module.exports = {
 		author: String,
 		title: String,
 		desc: String,
+		parent: String,
 		path: String,
 		body: String,
 		comments:[
