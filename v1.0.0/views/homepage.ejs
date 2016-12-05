@@ -100,19 +100,19 @@
                 <div class="col-md-4" >
                     <ul id="tree">
                         <li>
-                        <span class="get_context_menu"><i class="glyphicon glyphicon-cog"></i></span>
+                        <span class="get_context_menu" data-path="/root"><i class="glyphicon glyphicon-cog"></i></span>
                         <a href="#" class='tree-parent-anchor'>Root</a>
                         <%  function get_tree(tree) { %>
                             <ul>
                             <%  for(var i in tree){ %>
                                     <%if(tree[i].children.length > 0){ %>                                       
                                         <li>
-                                            <span class="get_context_menu"><i class="glyphicon glyphicon-cog"></i></span>
+                                            <span class="get_context_menu" data-path="<%= tree[i].path %>/<%= tree[i].title %>" ><i class="glyphicon glyphicon-cog"></i></span>
                                             <a href="#" class='tree-parent-anchor'> <%= tree[i].title %></a>
                                             <% get_tree(tree[i].children); %>
                                         </li>
                                     <% } else { %>
-                                        <li><span class="get_context_menu"><i class="glyphicon glyphicon-cog"></i> </span><%= tree[i].title %> </li>
+                                        <li><span class="get_context_menu" data-path="<%= tree[i].path %>/<%= tree[i].title %>"><i class="glyphicon glyphicon-cog"></i> </span><%= tree[i].title %> </li>
                                     <% } %>
                                         
                             <% } %> 
