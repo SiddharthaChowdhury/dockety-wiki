@@ -45,13 +45,11 @@ $(function(){
 	if($('#document_view').length == 1){
 
         $('.create_new_btn').click(function(e){
-            var type = $(this).attr('data-type');
             var path = $(this).attr('data-path');
-            $('#createNewModal').find('.modal_mike').text( type == 'dir' ? "Create new directory" : "Create new document" );
-            $('#createNewModal').find('#doctype').val(type);
             $('#createNewModal').find('#path').val(path);
+            path = path.substr(1).replace('root', '<i class="glyphicon glyphicon-home"></i>')+"/?"
+            $('#createNewModal').find('.modal_mike').html( "New document in "+'<small>'+path+'</small>' );
             $('#createNewModal').find('.form-control').val("");
-            
             $('.context-box').hide();
         });
 
@@ -64,8 +62,5 @@ $(function(){
             }
         })
 	}
-
-    
-
 })
 

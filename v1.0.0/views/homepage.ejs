@@ -1,8 +1,17 @@
 <style type="text/css">
+    a{
+        text-decoration: none;
+        color:grey;
+    }
+    a:hover{
+        color:#333;
+        text-decoration: none;
+    }
     .context-box{
         display: -webkit-flex;
         display: flex;
-        background-color:#F2F2F2;
+        background-color:#f1f1f1;
+        border:1px solid #333;
         box-shadow: 10px 10px 5px #888888;
         padding: 5px 10px;
         display: none;
@@ -11,10 +20,19 @@
     .context-box .context-btns{
         text-decoration: none;
         color: #333;
-        padding: 5px 20px;
     }
     .context-box .context-btns i{
-        margin-right: 20px;
+        font-size: 24px;
+        padding: 10px;
+        background-color: #fff;
+        margin:2px 1px;
+    }
+    .context-box .context-btns i:hover{
+        /*font-size: 24px;
+        padding: 10px;*/
+        background-color: #000;
+        color: #fff;
+        /*margin:2px 1px;*/
     }
     ._close{
         cursor:pointer;
@@ -28,42 +46,47 @@
     .get_context_menu:hover, .get_context_menu:active{
         color: #333;
     }
+    .editor_choose{
+        text-align: center;
+        border:1px solid grey;
+        padding: 20px;
+    }
  /*====== TREE ======*/
-/*https://jsfiddle.net/Austin4Silvers/jjn9rh70/10/*/
-#tree {
-    margin: 2em 0 0 2em;
-    width: 20em;
-    list-style-type: none;
-}
+    /*https://jsfiddle.net/Austin4Silvers/jjn9rh70/10/*/
+    #tree {
+        margin: 2em 0 0 2em;
+        width: 20em;
+        list-style-type: none;
+    }
 
-#tree > li {
-    padding-bottom: 3px;
-    margin-bottom: 0.5em;
-}
+    #tree > li {
+        padding-bottom: 3px;
+        margin-bottom: 0.5em;
+    }
 
-#tree  li > a {
-    color: #333;
-    text-decoration: none;
+    #tree  li > a {
+        color: #333;
+        text-decoration: none;
 
-}
+    }
 
-#tree  li > a:after {
-    content: '+';
-    padding-left: 4px;
-    font-weight: bold;
-}
+    #tree  li > a:after {
+        content: '+';
+        padding-left: 4px;
+        font-weight: bold;
+    }
 
-#tree  li >a.active:after {
-    content: '-';
-    padding-left: 4px;
-    font-weight: bold;
-}
+    #tree  li >a.active:after {
+        content: '-';
+        padding-left: 4px;
+        font-weight: bold;
+    }
 
-#tree li ul {
-    margin: 0.5em 0 0.5em 2em;
-    display: none;
-    list-style-type: none;
-}
+    #tree li ul {
+        margin: 0.5em 0 0.5em 2em;
+        /*display: none;*/
+        list-style-type: none;
+    }
 
 
 </style>
@@ -101,7 +124,7 @@
                     <ul id="tree">
                         <li>
                         <span class="get_context_menu" data-path="/root"><i class="glyphicon glyphicon-cog"></i></span>
-                        <a href="#" class='tree-parent-anchor'>Root</a>
+                        <a href="#" class='tree-parent-anchor'> <i style="font-size: 23px;" class="glyphicon glyphicon-home"></i></a>
                         <%  function get_tree(tree) { %>
                             <ul>
                             <%  for(var i in tree){ %>
@@ -114,7 +137,6 @@
                                     <% } else { %>
                                         <li><span class="get_context_menu" data-path="<%= tree[i].path %>/<%= tree[i].title %>"><i class="glyphicon glyphicon-cog"></i> </span><%= tree[i].title %> </li>
                                     <% } %>
-                                        
                             <% } %> 
                             </ul>
                         <% } get_tree(tree); %>
@@ -130,10 +152,9 @@
         <!-- <input type="hidden" name="path"> -->
         <!-- <input type="hidden" name="title"> -->
         <span class="pull-right _close"><i class="glyphicon glyphicon-remove-circle"></i></span><br>
-        <a class="context-btns" href="#"><div><i class="glyphicon glyphicon-search"></i> View</div></a>
-        <a class="context-btns create_new_btn" href="#" data-path="" data-toggle="modal" data-target="#createNewModal"><div><i class="glyphicon glyphicon-plus"></i> New</div></a>
-        <a class="context-btns" href="#"><div><i class="glyphicon glyphicon-pencil"></i> Edit</div></a>
-        <a class="context-btns" href="#"><div><i class="glyphicon glyphicon-remove"></i> Delete</div></a>
+        <a class="context-btns" href="#"><i class="glyphicon glyphicon-search"></i></a>
+        <a class="context-btns create_new_btn" href="#" data-path="" data-toggle="modal" data-target="#createNewModal"><i class="glyphicon glyphicon-plus"></i></a>
+        <a class="context-btns" href="#"><i class="glyphicon glyphicon-pencil"></i></a>
     </div>
 
     <!-- Modal -->
@@ -146,18 +167,19 @@
                         <h4 class="modal-title modal_mike">Modal Header</h4>
                     </div>
                     <div class="modal-body">
-                        <input type="hidden" name="path" id="path">
-                        <div class="form-group">
-                            <label for="title">Title:</label>
-                            <input type="text" class="form-control" name="title" id="title">
+                        <h5>Pick an editor of your choice</h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <a href="#">
+                                    <p class="editor_choose"> WYSIWYG editor </p>
+                                </a>
+                            </div>
+                            <div class="col-md-6">
+                                <a href="#">
+                                    <p class="editor_choose"> Markdown editor </p>
+                                </a>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="summary">A few words as summary:</label>
-                            <textarea class="form-control" name="summary" rows="5" id="summary"></textarea>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-default" type="submit">Create</button>
                     </div>
                 </form>
             </div>
