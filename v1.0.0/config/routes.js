@@ -34,6 +34,7 @@ module.exports.routes = {
 
   '/': 'DocumentController.view',
   '/documents': 'DocumentController.view',
+  '/markdown': 'DocumentController.markdownPage',
   'post /createNew': 'DocumentController.createNew'
 
   /***************************************************************************

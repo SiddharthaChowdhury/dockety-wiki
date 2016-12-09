@@ -96,5 +96,13 @@ module.exports = {
 				return res.redirect('/documents');
 			}
 		})
-	}
+	},
+
+	markdownPage: function(req, res){
+		// if(!req.param('path')){
+		// 	req.addFlash('error', 'Error! Path is missing!');
+		// 	return res.redirect('/documents');
+		// }
+		return res.view('editors/markdown')
+	},
 }
