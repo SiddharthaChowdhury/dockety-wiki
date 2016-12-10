@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%=typeof title == 'undefined' ? 'Markdown' : title%></title>
+
+    <!-- Viewport mobile tag for sensible mobile support -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <!--STYLESe-->
+    <link rel="stylesheet" href="/styles/bootstrap.min.css">
+    <link rel="stylesheet" href="/styles/importer.css">
+    <link rel="stylesheet" href="/styles/styles.css">
+    <!--STYLESe END-->
+  </head>
+
+  <body>
+    <%- body %>
+
+    <!--SCRIPTSe-->
+    <script src="/js/dependencies/sails.io.js"></script>
+    <script src="/js/dependencies/jquery-3.1.1.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/jquery-resizable.js"></script>
+    <script src="/js/showdown.min.js"></script>
+    <script src="/js/script.js"></script>
+    <!--SCRIPTSe END-->
+    <script type="text/javascript">
+        $(function(){
+            $(".panel-left").resizable({
+               handleSelector: ".splitter",
+               resizeHeight: false
+            });
+
+            $(".panel-top").resizable({
+               handleSelector: ".splitter-horizontal",
+               resizeWidth: false
+            });
+            // ============================================
+            var converter = new showdown.Converter();
+                // text      = '#hello, markdown!',
+                // html      = converter.makeHtml(text);
+
+            $('#editor').keyup(function(){
+                var text = $(this).text();
+                $('#viewer').html(converter.makeHtml(text))    
+            })
+
+        })
+    </script>
+  </body>
+</html>

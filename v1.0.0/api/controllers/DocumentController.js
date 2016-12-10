@@ -103,6 +103,10 @@ module.exports = {
 		// 	req.addFlash('error', 'Error! Path is missing!');
 		// 	return res.redirect('/documents');
 		// }
-		return res.view('editors/markdown')
+		return res.view('editors/markdown',{layout: 'layout_markdown'})
 	},
+
+	wysiwygPage: function(req, res){
+		return res.view('editors/wysiwyg',{layout: 'layout_wysiwyg'});
+	} 
 }

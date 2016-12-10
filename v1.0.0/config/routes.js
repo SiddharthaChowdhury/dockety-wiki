@@ -35,6 +35,7 @@ module.exports.routes = {
   '/': 'DocumentController.view',
   '/documents': 'DocumentController.view',
   '/markdown': 'DocumentController.markdownPage',
+  '/wysiwyg': 'DocumentController.wysiwygPage',
   'post /createNew': 'DocumentController.createNew'
 
   /***************************************************************************

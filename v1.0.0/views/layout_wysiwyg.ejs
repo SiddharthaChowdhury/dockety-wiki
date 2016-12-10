@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%=typeof title == 'undefined' ? 'WYSIWYG' : title%></title>
+
+    <!-- Viewport mobile tag for sensible mobile support -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <!--STYLESd-->
+    <link rel="stylesheet" href="/styles/bootstrap.min.css">
+    <!-- <link rel="stylesheet" href="/styles/importer.css"> -->
+    <link rel="stylesheet" href="/styles/split-pane.css">
+    <link rel="stylesheet" href="/styles/styles.css">
+    <!--STYLES END-->
+  </head>
+
+  <body>
+    <%- body %>
+
+    <!--SCRIPTSd-->
+    <script src="/js/dependencies/sails.io.js"></script>
+    <script src="/js/dependencies/jquery-3.1.1.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/jquery-resizable.js"></script>
+    <script src="/js/showdown.min.js"></script>
+    <script src="/js/script.js"></script>
+    <!--SCRIPTS ENDd-->
+        <script>
+            $(function() {
+                $(".panel-left").resizable({
+                   handleSelector: ".splitter",
+                   resizeHeight: false
+                });
+
+                $(".panel-top").resizable({
+                   handleSelector: ".splitter-horizontal",
+                   resizeWidth: false
+                });
+            });
+        </script>
+  </body>
+</html>
