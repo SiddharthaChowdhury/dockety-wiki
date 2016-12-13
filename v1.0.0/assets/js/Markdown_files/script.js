@@ -1,31 +1,27 @@
 $(function(){
     // Preload TREE
     // https://jsfiddle.net/Austin4Silvers/jjn9rh70/10/
-    // 
-    var MenuTree = {
-        collapse: function(element) {
-            element.slideToggle(200);
-        },
-        init: function() {
-            $('a', '#tree').each(function() {
-                var $a = $(this);
-                var $li = $a.parent();
-                if ($a.next().is('ul')) {
-                    var $ul = $a.next();
-                    $(document).on('click', $a, function(e){
-                        e.preventDefault();
-                        MenuTree.collapse($ul);
-                        $a.toggleClass('active');
-                    });
-                }
-            });
-
-        }
-    };
-
     if($('#tree').length > 0 ){
-
-        MenuTree.init();
+        var MenuTree = {
+            collapse: function(element) {
+                element.slideToggle(200);
+            },
+            walk: function() {
+                $('.tree-parent-anchor', '#tree').each(function() {
+                    var $a = $(this);
+                    var $li = $a.parent();
+                    if ($a.next().is('ul')) {
+                        var $ul = $a.next();
+                        $a[0].addEventListener('click', function(e){
+                            e.preventDefault();
+                            MenuTree.collapse($ul);
+                            $a.toggleClass('active');
+                        });
+                    }
+                });
+            }
+        };
+        MenuTree.walk();
 
         // initiating context-menu
         var x = new _contextMenu();              
@@ -123,52 +119,19 @@ $(function(){
         $.ajax({
             url: '/rest/get-tree',
             type: "POST",
-            data: {type:'async'},
+            data: {type:'async'}
             success: function(data) {
-                var tree = render_tree(data);
-                $('#SaveAs').find('.tree_cont').html(tree);
-                $('#SaveAs').find('.tree_cont').find('li').each(function(){
-                    if($(this).text() == '')
-                        $(this).remove()
-                })
-            },
+                 console.log(data)            },
             error: function(err) {
                 console.log(err)
             }
         });
 
-        $('#SaveAs').find('.si_doctitle').val($('#title').val());
 
+        // render tree in modal
+        // add event listener to each doc
+        // display the modal
         $('#SaveAs').modal('show');
     }
-
-    function render_tree(tree_data){
-        // var tree_data = JSON.parse($('pre').text());
-        var dom = '<ul id="tree">'
-                dom+= '<li><a href="#" data-path="/Home/" class="si_getPath" ><i class="fa fa-home" aria-hidden="true"></i> Home</li>';
-                function get_tree(tree_data){
-                    dom += '<ul>';
-                        for(var i in tree_data){
-                            if(tree_data[i].children.length > 0){
-                                dom += '<li>';
-                                    dom += '<a href="#" data-path="'+tree_data[i].path.replace('root', 'Home')+'/'+tree_data[i].title+'/" class="si_getPath" ><i class="fa fa-angle-double-right" aria-hidden="true"></i> '+tree_data[i].title+'</a>';
-                                    get_tree(tree_data[i].children);
-                                dom += '<li>';
-                            }
-                            else{
-                                dom += '<li><a href="#" data-path="'+tree_data[i].path.replace('root', 'Home')+'/'+tree_data[i].title+'/" class="si_getPath" > <i class="fa fa-angle-right" aria-hidden="true"></i> '+tree_data[i].title+'</a></li>'
-                            }
-                        }
-                    dom+= '</ul>'
-                }
-                get_tree(tree_data);
-            dom+= '</ul>';
-        return dom;
-    }
-
-    $(document).on('click', '.si_getPath', function(e){
-        e.preventDefault();
-        $('.si_docLocation').val($(this).attr('data-path'))
-    })
 })
 

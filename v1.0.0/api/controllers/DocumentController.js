@@ -6,10 +6,8 @@ module.exports = {
 
 				var set = quicksort(docs);
 				var menuItemsTree = createTree(set);
-
-
-				// var menuItemsTree = createTree( docs );
-				// return res.json(menuItemsTree);
+				if(req.param('type') == 'async')
+					return res.json(menuItemsTree);
 				return res.view('homepage', {tree: menuItemsTree});
 			}
 		})
@@ -99,11 +97,13 @@ module.exports = {
 	},
 
 	markdownPage: function(req, res){
-		// if(!req.param('path')){
-		// 	req.addFlash('error', 'Error! Path is missing!');
-		// 	return res.redirect('/documents');
-		// }
-		return res.view('editors/markdown',{layout: 'layout_markdown'})
+		var chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOP1234567890";
+	    var newstr = "";
+	    for (var x = 0; x < 8; x++) {
+	        var i = Math.floor(Math.random() * chars.length);
+	        newstr += chars.charAt(i);
+	    }
+		return res.view('editors/markdown',{title:newstr,layout: 'layout_markdown'})
 	},
 
 	wysiwygPage: function(req, res){

@@ -36,7 +36,8 @@ module.exports.routes = {
   '/documents': 'DocumentController.view',
   '/markdown': 'DocumentController.markdownPage',
   '/wysiwyg': 'DocumentController.wysiwygPage',
-  'post /createNew': 'DocumentController.createNew'
+  'post /createNew': 'DocumentController.createNew',
+  'post /rest/get-tree': 'DocumentController.view', // ASYNC
 
   /***************************************************************************
   *                                                                          *

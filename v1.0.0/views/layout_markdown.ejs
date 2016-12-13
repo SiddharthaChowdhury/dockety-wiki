@@ -9,6 +9,7 @@
     <!--STYLESe-->
     <link rel="stylesheet" href="/styles/bootstrap.min.css">
     <link rel="stylesheet" href="/styles/importer.css">
+    <link rel="stylesheet" href="/styles/font-awesome.min.css">
     <link rel="stylesheet" href="/styles/styles.css">
     <!--STYLESe END-->
   </head>
@@ -19,33 +20,11 @@
     <!--SCRIPTSe-->
     <script src="/js/dependencies/sails.io.js"></script>
     <script src="/js/dependencies/jquery-3.1.1.min.js"></script>
-    <script src="/js/bootstrap.min.js"></script>
-    <script src="/js/jquery-resizable.js"></script>
-    <script src="/js/showdown.min.js"></script>
+    <script src="/js/dependencies/bootstrap.min.js"></script>
+    <script src="/js/dependencies/jquery-resizable.js"></script>
+    <script src="/js/dependencies/showdown.min.js"></script>
     <script src="/js/script.js"></script>
+    <script src="/js/markdown.js"></script>
     <!--SCRIPTSe END-->
-    <script type="text/javascript">
-        $(function(){
-            $(".panel-left").resizable({
-               handleSelector: ".splitter",
-               resizeHeight: false
-            });
-
-            $(".panel-top").resizable({
-               handleSelector: ".splitter-horizontal",
-               resizeWidth: false
-            });
-            // ============================================
-            var converter = new showdown.Converter();
-                // text      = '#hello, markdown!',
-                // html      = converter.makeHtml(text);
-
-            $('#editor').keyup(function(){
-                var text = $(this).text();
-                $('#viewer').html(converter.makeHtml(text))    
-            })
-
-        })
-    </script>
   </body>
 </html>
