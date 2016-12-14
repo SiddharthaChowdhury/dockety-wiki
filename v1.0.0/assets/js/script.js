@@ -114,32 +114,54 @@ $(function(){
 
     function saveDocument(){
         var location = $('body').find('#location').val();
-        if(location == '')
+        if(location == ''){
             get_location_modal();
+        }
+        else{
+            var data = {};
+            $('form').find('.si_input').each(function(){
+                data[$(this).attr('name')] = $(this).val();
+            })
+            
+            $.ajax({
+                url: '/rest/save-doc',
+                type: 'POST',
+                data: data,
+                success: function(data){
+                    $('#_id').val(data.data);
+                    alert("Document is saved successfully")
+                },
+                error: function(data){
+                    alert(data)
+                }
+            })
+        }
     }
 
     function get_location_modal(){
-        // get tree details
-        $.ajax({
-            url: '/rest/get-tree',
-            type: "POST",
-            data: {type:'async'},
-            success: function(data) {
-                var tree = render_tree(data);
-                $('#SaveAs').find('.tree_cont').html(tree);
-                $('#SaveAs').find('.tree_cont').find('li').each(function(){
-                    if($(this).text() == '')
-                        $(this).remove()
-                })
-            },
-            error: function(err) {
-                console.log(err)
-            }
-        });
-
-        $('#SaveAs').find('.si_doctitle').val($('#title').val());
-
-        $('#SaveAs').modal('show');
+        if($('#async_flag').val() == 'false'){
+            // get tree details
+            $.ajax({
+                url: '/rest/get-tree',
+                type: "POST",
+                data: {type:'async'},
+                success: function(data) {
+                    var tree = render_tree(data);
+                    $('#SaveAs').find('.tree_cont').html(tree);
+                    $('#async_flag').val('true')
+                    $('#SaveAs').find('.tree_cont').find('li').each(function(){
+                        if($(this).text() == '')
+                            $(this).remove()
+                    })
+                },
+                error: function(err) {
+                    var warning = '<h5><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Could\'nt reach out for help. Please check your internet connection </h5>'
+                    $('#SaveAs').find('.tree_cont').html(warning);
+                }
+            });
+        }
+            $('#SaveAs').find('.si_doctitle').val($('#title').val());
+            $('#SaveAs').modal('show');
     }
 
     function render_tree(tree_data){
@@ -166,9 +188,17 @@ $(function(){
         return dom;
     }
 
+    $('.saveDoc').click(function(e){
+        e.preventDefault();
+        if($(this).hasClass('saveDoc-modal'))
+            $('#title').val($('.si_doctitle').val())
+        saveDocument();
+    });
+
     $(document).on('click', '.si_getPath', function(e){
         e.preventDefault();
         $('.si_docLocation').val($(this).attr('data-path'))
-    })
+    });
+
 })
 

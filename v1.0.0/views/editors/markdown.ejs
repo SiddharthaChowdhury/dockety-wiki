@@ -73,6 +73,31 @@ textarea {
     letter-spacing: 3px;
     font-size: 1em;
 }
+
+.top-nav{
+    padding: 7px 12px;
+    font-size: 0.7em;
+    text-align: right;
+}
+
+#main-nav{
+    list-style-type: none;
+}
+#main-nav li {
+    display: inline-block;
+    background-color: #E6E6E6;
+    color: #333;
+    padding: 5px 9px;
+    cursor: pointer;
+}
+#main-nav li:hover {
+    background-color: #848484;
+    color: #f1f1f1;
+}
+.saveDoc{
+    background-color: #424242;
+    color: #fff;
+}
 /*----- TREE CSS -------*/
 
 /* Make the <ul>  <li> skeleton look like a TREE list*/
@@ -97,42 +122,53 @@ textarea {
 
 </style>
 <div class="container-fluid" id="markdown_container">
+    <div class="top-nav">
+        <small>COPYRIGHT &copy; 2016 by Dockety.inc</small>
+    </div>
+    <form method="post" action="/save-doc/markdown"> 
     <div class="row">
         <div class="col-md-6">
+            <input type="hidden" class="si_input" name="_id" id="_id" value="">
             <div class="form-group">
-                <input type="text" class="form-control" id="title" placeholder="Summary of the document" value="Untitled_<%= title %>.md">
+                <input type="text" class="form-control si_input" name="title" id="title" placeholder="Summary of the document" value="Untitled_<%= title %>.md">
             </div>
             <div class="form-group">
-                <input type="text" class="form-control" id="tags" placeholder="Tag-1, Tag-2, Tag-n  (Comma separated)">
+                <input type="text" class="form-control si_input" name="tags" id="tags" placeholder="Tag-1, Tag-2, Tag-n  (Comma separated)">
             </div>
         </div>
+        <input type="hidden" name="doctype" value="md" class="si_input">
         <div class="col-md-6">
-            <div class="col-md-6">
-                <h5>Auto save changes made every 2 min?</h5>
+            <div class="col-md-3">
                 <div class="radio">
-                    <label><input type="radio" name="austo_save" value="1"> Yes</label>
-                </div>
-                <div class="radio">
-                    <label><input type="radio" name="austo_save" checked value="0"> No</label>
+                    <label><input type="checkbox" name="austo_save"> Turn auto-save</label>
                 </div>
             </div>
-            <div class="col-md-6">
-                <h3 class="text-center">Markdown editor</h3>
+            <div class="col-md-9">
+                <!-- <h3 class="text-center">Markdown editor</h3> -->
+                <ul id="main-nav" class="pull-right">
+                    <a href="/markdown" target="_blank"><li>New document</li></a>
+                    <li>Trees</li>
+                    <li>People</li>
+                    <li>My docs</li>
+                    <li>Profile</li>
+                </ul>
             </div>
         </div>
         <div class="col-md-10">
             <div class="form-group">
-                <input type="text" class="form-control" readonly id="location" placeholder="Location is not set yet! (Click on 'Set Location' button) =>">
+                <input type="text" class="form-control si_docLocation si_input" name="path" readonly id="location" placeholder="Location is not set yet! (Click on 'Set Location' button) =>">
             </div>
         </div>
         <div class="col-md-2">
-            <button class="btn btn-default pull-left" id="set_location">Set location</button>
+            <button class="btn btn-default pull-left" id="set_location">Set location</button>&nbsp;
+            <button class="btn btn-default saveDoc" >Save</button>
         </div>
     </div>
+    
     <div class="panel-container">
         <div class="panel-left" >
             <div class="sub_nav">Editor</div>
-            <textarea id="editor"># An exhibit of Markdown
+            <textarea id="editor" name="content" class="si_input"># An exhibit of Markdown
 
 This note demonstrates some of what [Markdown][1] is capable of doing.
 
@@ -216,7 +252,7 @@ There's actually a lot more to Markdown than this. See the official [introductio
   [3]: http://www.https://en.wikipedia.org/
   [4]: http://daringfireball.net/projects/markdown/basics
   [5]: http://daringfireball.net/projects/markdown/syntax
-</textarea>
+          </textarea>
         </div>
 
         <div class="splitter">
@@ -227,6 +263,7 @@ There's actually a lot more to Markdown than this. See the official [introductio
             <div id="viewer" class="wordwraps"></div>
         </div>
   	</div>
+  </form>
 </div>
 
 <!-- =============== MODAL SECTION ================ -->
@@ -240,6 +277,7 @@ There's actually a lot more to Markdown than this. See the official [introductio
               <h4 class="modal-title">Save document <small>(Click where you want to save the document)</small></h4>
             </div>
             <div class="modal-body">
+                <input type="hidden" id="async_flag" value="false">
                 <div class="row tree_cont" style="overflow: scroll; padding: 10px 15px; height: 400px;">
                      Please wait <i class="fa fa-refresh fa-spin fa-fw"></i>
                 </div>
@@ -255,7 +293,7 @@ There's actually a lot more to Markdown than this. See the official [introductio
                 </div>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-default">Save document</button>
+              <button type="button" class="btn btn-default saveDoc saveDoc-modal" data-dismiss="modal">Save document</button>
             </div>
         </div>
     </div>

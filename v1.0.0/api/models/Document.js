@@ -20,6 +20,21 @@ module.exports = {
 			upvote: Number,
 			downvote: Number,
 			fabs: Number
+		},
+		tags:[],
+		contributers: [{
+			name: String,
+			c_id: String,
+			permissions:{
+				type: String,
+				enum:['R', 'W', 'X'],
+				default: 'R'
+			}
+		}],
+		scope: {
+			type: String,
+			enum: ['public', 'private'],
+			default: 'private'
 		}
 	}
 }

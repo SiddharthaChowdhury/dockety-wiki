@@ -23,7 +23,8 @@
     "sails": "~0.12.3",
     "sails-disk": "~0.10.9",
     "sails-hook-flash": "^0.2.1",
-    "sails-hook-orm-mongoose": "^0.2.1"
+    "sails-hook-orm-mongoose": "^0.2.1",
+    "skipper": "^0.7.3"
   },
   "scripts": {
     "debug": "node debug app.js",

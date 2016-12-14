@@ -78,22 +78,76 @@ module.exports = {
 
 	createNew: function(req, res){
 		var raw = req.params.all();
-		var p_arr = raw.path.split('/');
-
-		var data_e = {
-			author: 'annonymous',
-			title: raw.title,
-			parent: p_arr[(p_arr.length - 1)],
-			desc: raw.summary,
-			path: raw.path
+		if(!raw.title || !raw.path){
+			res.status(404);
+			return res.json("Title or Location is missing");
 		}
-		Document.create(data_e, function(err, data){
-			if(err) return res.negotiate(err);
-			else{
-				req.addFlash('success', '"'+raw.title+'" was created successfully!');
-				return res.redirect('/documents');
+		raw.path = '/'+raw.path.replace(/(^\/)|(\/$)/g, "").replace('Home', 'root');
+		raw.tags = raw.tags.replace(/(^,)|(,$)/g, "")
+
+		var tags = [], tag_arr = raw.tags.split(',');
+		for(var i = 0; i < tag_arr.length; i++){
+			var tg = tag_arr[i].trim();
+			if( tg != '' )
+				tags.push(tg)
+		}
+
+		if(raw.path != '/root'){
+			var p_arrr = raw.path.split('/');
+			var ttl = p_arrr.pop()
+			Document.find({title: ttl, path: p_arrr.join('/')}, function(err, par){
+				if(err) return res.negotiate(err);
+
+				if(par.length > 0){
+					proceed_save();
+				}
+				else{
+					res.status(400)
+					return res.json("Data manipulation is not allowed. Further attempt will block your account.");
+				}
+			})
+		}else
+			proceed_save();
+
+
+		function proceed_save(){
+			var p_arr = raw.path.split('/');
+			var data_e = {
+				author: 'annonymous',
+				title: raw.title,
+				parent: p_arr[(p_arr.length - 1)],
+				body: raw.content,
+				path: raw.path,
+				tags: raw.tags.split(',')
 			}
-		})
+			if(raw._id){
+				Document.count({_id: raw._id, parent: data_e.parent}, function(err, count){
+					if(count == 1){
+						Document.update({_id: raw._id, parent: data_e.parent}, data_e, function(err, data){
+							if(err) return res.negotiate(err);
+							else{
+								res.status(200);
+								return res.json({msg:"Document saved"});
+							}
+						})
+					}
+					else{
+						res.status(400)
+						return res.json("Data manipulation is not allowed. Further attempt will block your account.");
+					}
+				});
+			}
+			else{
+				Document.create(data_e, function(err, data){
+					if(err) return res.negotiate(err);
+					else{
+						res.status(200);
+						return res.json({msg:"Document saved", data: data._id});
+					}
+				});
+			}
+		}
+			
 	},
 
 	markdownPage: function(req, res){
