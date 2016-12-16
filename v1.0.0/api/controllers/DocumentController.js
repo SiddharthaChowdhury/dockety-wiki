@@ -1,10 +1,12 @@
 module.exports = {
 	view: function(req, res){
-		Document.find({}, function(err, docs){
+		var uid = req.session.User._id;
+		User.find({_id: uid}, 'articles' , function(err, docs){
 			if(err) return res.negotiate(err);
 			else{
 
-				var set = quicksort(docs);
+				var articles = docs[0].articles
+				var set = quicksort(articles);
 				var menuItemsTree = createTree(set);
 				if(req.param('type') == 'async')
 					return res.json(menuItemsTree);
@@ -78,6 +80,7 @@ module.exports = {
 
 	createNew: function(req, res){
 		var raw = req.params.all();
+		var uid = req.session.User._id;
 		if(!raw.title || !raw.path){
 			res.status(404);
 			return res.json("Title or Location is missing");
@@ -95,7 +98,7 @@ module.exports = {
 		if(raw.path != '/root'){
 			var p_arrr = raw.path.split('/');
 			var ttl = p_arrr.pop()
-			Document.find({title: ttl, path: p_arrr.join('/')}, function(err, par){
+			User.find({_id: uid, 'articles.title': ttl, 'articles.path': p_arrr.join('/')}, function(err, par){
 				if(err) return res.negotiate(err);
 
 				if(par.length > 0){
@@ -112,8 +115,10 @@ module.exports = {
 
 		function proceed_save(){
 			var p_arr = raw.path.split('/');
+			var randomID = require("random-id");
+			var _id = randomID(30);
 			var data_e = {
-				author: 'annonymous',
+				_id: _id,
 				title: raw.title,
 				parent: p_arr[(p_arr.length - 1)],
 				body: raw.content,
@@ -121,13 +126,22 @@ module.exports = {
 				tags: raw.tags.split(',')
 			}
 			if(raw._id){
-				Document.count({_id: raw._id, parent: data_e.parent}, function(err, count){
+				// console.log("id: "+raw._id)
+				User.count({_id: uid,'articles._id': raw._id, 'articles.parent': data_e.parent}, function(err, count){
 					if(count == 1){
-						Document.update({_id: raw._id, parent: data_e.parent}, data_e, function(err, data){
+						User.update({_id: uid }
+						,{ $pull: { 'articles': { _id: raw._id } } }
+						, function(err, data){
 							if(err) return res.negotiate(err);
 							else{
-								res.status(200);
-								return res.json({msg:"Document saved"});
+								User.findByIdAndUpdate(uid, {$push:{'articles': data_e}}, function(err, data){
+									if(err) return res.negotiate(err);
+									else{
+										// console.log(_id)
+										res.status(200);
+										return res.json({msg:"Data saved", data: _id});
+									}
+								});
 							}
 						})
 					}
@@ -138,11 +152,12 @@ module.exports = {
 				});
 			}
 			else{
-				Document.create(data_e, function(err, data){
+				User.findByIdAndUpdate(uid, {$push:{'articles': data_e}}, function(err, data){
 					if(err) return res.negotiate(err);
 					else{
+						// console.log(_id)
 						res.status(200);
-						return res.json({msg:"Document saved", data: data._id});
+						return res.json({msg:"Data saved", data: _id});
 					}
 				});
 			}

@@ -12,24 +12,26 @@ module.exports = {
 		last_login: Date,
 		articles:[
 			{
+				_id: String,
+				title: String,
 				parent: String,
 				path: String,
 				body: String,
-				comments:[
-					{
-						author: String, // slug
-						desc:String,
-						date:{
-							type: Date,
-							default: Date.now
-						}
-					}
-				],
-				meta:{
-					upvote: Number,
-					downvote: Number,
-					fabs: Number
-				},
+				// comments:[
+				// 	{
+				// 		author: String, // slug
+				// 		desc:String,
+				// 		date:{
+				// 			type: Date,
+				// 			default: Date.now
+				// 		}
+				// 	}
+				// ],
+				// meta:{
+				// 	upvote: Number,
+				// 	downvote: Number,
+				// 	fabs: Number
+				// },
 				tags:[],
 				contributers: [{
 					name: String,

@@ -66,7 +66,7 @@ module.exports = {
     						data[0].password = '';
     						req.session.User = data[0];
     						req.session.isAuthPassed = true;
-    						console.log(req.session.User)
+    						// console.log(req.session.User)
     						return res.redirect('/dashboard');
     					}
     					else{
