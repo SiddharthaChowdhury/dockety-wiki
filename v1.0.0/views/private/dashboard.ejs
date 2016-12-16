@@ -29,15 +29,15 @@
 	        <div class="col-md-3">
 	        	<div class="thumbnail">
 				    <a href="/dashboard">
-				        <img src="/images/gravatar/3.png" alt="Gravatar" style="width:100%">
+				        <img src="<%= req.session.User.avatar %>" alt="Gravatar" style="width:100%">
 				    </a>
 			    </div>
 	        </div>
 	        <!-- User info -->
 	        <div class="col-md-9">
-	        	<div class="h3">Mohan Doe</div>
-	        	<div>~ <b>Iam like halwa-wala in writing articles, all sweet!</b></div>
-	        	<small>iam-halwawala@dockety.inc</small>
+	        	<div class="h3"><%= req.session.User.full_name %></div>
+	        	<div>~ <i><%= typeof req.session.User.about_me == 'undefined' ? 'No self summary added yet!': req.session.User.about_me %></i></div>
+	        	<small><%= req.session.User.email %></small>
 	        </div>
         </div>
         <div class="col-md-6">

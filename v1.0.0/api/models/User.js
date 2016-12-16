@@ -1,6 +1,7 @@
 module.exports = {
 	schema:{
 		full_name: String,
+		about_me: String,
 		email: String,
 		avatar: String,
 		password: String,

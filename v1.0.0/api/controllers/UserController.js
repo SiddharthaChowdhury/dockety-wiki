@@ -46,6 +46,44 @@ module.exports = {
 		})
 	},
 
+	loginUser: function(req, res){
+		var raw = req.params.all();
+		if(!raw.email || !raw.pass){
+			req.addFlash('login_error', 'You can not login without email and password.');
+			return res.redirect('/login');
+		}
+		else{
+			if(req.session.isAuthPassed){
+				return res.redirect('/dashboard');
+			}
+			User.find({email: raw.email}, function(err, data){
+    			if(err) return res.negotiate(err);
+    			else{
+    				if(data.length == 1){
+    					var password = data[0].password;
+    					var bcrypt = require('bcrypt-nodejs');
+    					if( bcrypt.compareSync(raw.pass, password) ){
+    						data[0].password = '';
+    						req.session.User = data[0];
+    						req.session.isAuthPassed = true;
+    						console.log(req.session.User)
+    						return res.redirect('/dashboard');
+    					}
+    					else{
+	    					req.addFlash('login_error', 'Email / Password was invalid.');
+							return res.redirect('/login');
+	    				}
+    				}
+    				else{
+    					req.addFlash('login_error', 'Email / Password was invalid.');
+						return res.redirect('/login');
+    				}
+    			}
+    		})
+		}
+
+	},
+
 	getDashboardView: function(req, res){
 		return res.view('private/dashboard', {layout: 'layout_private'})
 	},
