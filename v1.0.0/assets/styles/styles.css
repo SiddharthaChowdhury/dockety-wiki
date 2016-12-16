@@ -11,3 +11,34 @@ button, .btn{
 .hide-this{
 	display: none;
 }
+
+.h3{
+	font-size: 2em;
+}
+.h4{
+	font-size: 1.7em;
+}
+.h5{
+	font-size: 1.4em;
+}
+/*------------PRIVATE ---------------*/
+.top-nav{
+    padding: 7px 12px;
+    font-size: 0.7em;
+    text-align: right;
+}
+
+#main-nav{
+    list-style-type: none;
+}
+#main-nav li {
+    display: inline-block;
+    background-color: #E6E6E6;
+    color: #333;
+    padding: 5px 9px;
+    cursor: pointer;
+}
+#main-nav li:hover {
+    background-color: #848484;
+    color: #f1f1f1;
+}

@@ -1,0 +1,127 @@
+<style type="text/css">
+	input {
+		border-radius: 0px !important;
+	}
+	.btn{
+		border-radius: 0px !important;	
+	}
+	.alert-danger{
+		border-radius: 0px !important;
+		border-left: 3px solid crimson !important;
+		background-color: #fff !important;
+		color: #333;
+	}
+	.alert-danger:before{
+		content: 'Error: ';
+		color: crimson;
+	}
+
+	.alert-success{
+		border-radius: 0px !important;
+		border-left: 3px solid #088A08 !important;
+		background-color: #fff !important;
+		color: #333;
+	}
+	.alert-success:before{
+		content:'Success: ';
+		color:#088A08;
+	}
+
+	/*----- CSS this page -----*/
+	#signupForm div:nth-child(3){
+		display: none;
+	}
+	.policy_container{
+		max-height: 340px;
+		overflow-y: scroll;
+		padding: 15px;
+		border-top:1px dashed silver;
+	}
+	h3 small{
+		font-size: 0.5em;
+	}
+</style>
+<div class="container-fluid">
+	<div class="row" >
+		<!-- Signup -->
+		<% if(title == 'Sign up'){%>
+		<div class="col-md-4">
+			<h3 class="text-center">Create an account</h3>
+			<% flash.get('signup_success').forEach(function (message) { %>
+	            <div class="alert alert-success">
+	                <button class="close" data-dismiss="alert"><i class="pci-cross pci-circle"></i></button>
+	                <%- message %> <a href="/login">. Please login</a>
+	            </div>
+	        <% }) %>
+	        <% flash.get('signup_error').forEach(function (message) { %>
+	            <div class="alert alert-danger">
+	                <button class="close" data-dismiss="alert"><i class="pci-cross pci-circle"></i></button>
+	              	<%- message %>
+	            </div>
+	        <% }) %>
+			<form method="post" id="signupForm" action="/create/user">
+				<div class="form-group">
+				  	<label for="usr">Name:</label>
+				  	<input type="text" class="form-control" name="name" id="usr">
+				</div>
+				<div class="form-group">
+				  	<label for="eml">Email:</label>
+				  	<input type="email" class="form-control" name="email" id="eml">
+				</div>
+				<div class="form-group">
+				  	<label for="phn">Phone:</label>
+				  	<input type="text" class="form-control" name="phone" id="phn">
+				</div>
+				<div class="form-group">
+				  	<label for="pwd1">Password:</label>
+				  	<input type="password" class="form-control" name="pass1" id="pwd1" placeholder="Password 1">
+				</div>
+				<div class="form-group">
+				  	<label for="pwd2">Re-enter:</label>
+				  	<input type="password" class="form-control" name="pass2" id="pwd2" placeholder="Password 2">
+				</div>
+				<small class="col-md-9">By signing up you agree to our Policies
+				| <a href="/login">Sign in?</a>
+				</small>
+				<button type="submit" class="btn btn-default pull-right">Register</button>
+			</form>
+		</div>
+		<div class="col-md-8">
+			<h3> Policies <small> ~ It is very important for you to go through this section. Please do not skip.</small></h3>
+			<div class="col-md-12 policy_container">
+				<%include ../legal/policy_privacy.ejs%>
+			</div>
+		</div>
+		<%}%>
+		
+		<!-- Signin -->
+		<% if(title == 'Sign in'){%>
+		<div class="col-md-4">
+			<h3 class="text-center">Sign in</h3>
+			<div class="form-group">
+			  	<label for="eml">Email:</label>
+			  	<input type="text" class="form-control" id="eml">
+			</div>
+			<div class="form-group">
+			  	<label for="pwd">Password:</label>
+			  	<input type="password" class="form-control" id="pwd">
+			</div>
+			<small class="col-md-10"><a href="/signup">Create new account?</a> | <a href="/forgot-password">Forgotten Your Password?</a> </small>
+			<button type="submit" class="btn btn-default pull-right">Sign in</button>
+		</div>
+		<%}%>
+
+		<!-- Forgot password -->
+		<% if(title == 'Forgot password'){%>
+		<div class="col-md-4">
+			<h3 class="text-center">Forgot password ?</h3>
+			<div class="form-group">
+			  	<label for="eml">Enter your registered email:</label>
+			  	<input type="text" class="form-control" id="eml">
+			</div>
+			<small class="col-md-8">An email will be sent to your registered email address. | <a href="/login"> Login ?</a></small>
+			<button type="submit" class="btn btn-default pull-right">Reset password</button>
+		</div>
+		<%}%>
+	</div>
+</div>
