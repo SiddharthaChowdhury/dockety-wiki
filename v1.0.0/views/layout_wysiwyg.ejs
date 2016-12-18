@@ -1,42 +1,31 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%=typeof title == 'undefined' ? 'WYSIWYG' : title%></title>
+    <title><%=typeof title == 'undefined' ? 'Markdown' : title%></title>
 
     <!-- Viewport mobile tag for sensible mobile support -->
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-    <!--STYLESd-->
+    <!--STYLESe-->
     <link rel="stylesheet" href="/styles/bootstrap.min.css">
-    <!-- <link rel="stylesheet" href="/styles/importer.css"> -->
-    <link rel="stylesheet" href="/styles/split-pane.css">
+    <link rel="stylesheet" href="/styles/importer.css">
+    <link rel="stylesheet" href="/styles/font-awesome.min.css">
+    <link rel="stylesheet" href="/styles/summernote.css">
     <link rel="stylesheet" href="/styles/styles.css">
-    <!--STYLES END-->
+    <!--STYLESe END-->
   </head>
 
   <body>
     <%- body %>
 
-    <!--SCRIPTSd-->
+    <!--SCRIPTSe-->
     <script src="/js/dependencies/sails.io.js"></script>
     <script src="/js/dependencies/jquery-3.1.1.min.js"></script>
-    <script src="/js/bootstrap.min.js"></script>
-    <script src="/js/jquery-resizable.js"></script>
-    <script src="/js/showdown.min.js"></script>
+    <script src="/js/dependencies/bootstrap.min.js"></script>
+    <script src="/js/dependencies/jquery-resizable.js"></script>
+    <script src="/js/dependencies/summernote.min.js"></script>
     <script src="/js/script.js"></script>
-    <!--SCRIPTS ENDd-->
-        <script>
-            $(function() {
-                $(".panel-left").resizable({
-                   handleSelector: ".splitter",
-                   resizeHeight: false
-                });
-
-                $(".panel-top").resizable({
-                   handleSelector: ".splitter-horizontal",
-                   resizeWidth: false
-                });
-            });
-        </script>
+    <script src="/js/wysiwyg.js"></script>
+    <!--SCRIPTSe END-->
   </body>
 </html>

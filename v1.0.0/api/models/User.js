@@ -17,6 +17,10 @@ module.exports = {
 				parent: String,
 				path: String,
 				body: String,
+				doctype:{
+					type:String,
+					enum:['md', 'wysiwyg']
+				},
 				// comments:[
 				// 	{
 				// 		author: String, // slug

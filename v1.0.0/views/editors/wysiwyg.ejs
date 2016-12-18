@@ -1,6 +1,5 @@
-
 <style type="text/css">
-	/* horizontal panel*/
+   /* horizontal panel*/
 
 .panel-container {
   display: flex;
@@ -14,12 +13,12 @@
 .panel-left {
   flex: 0 0 auto;
   /* only manually resize */
-  padding: 10px;
+  padding: 5px 10px 10px 10px;
   width: 50%;
   max-width:90%;
   white-space: nowrap;
-  background: #838383;
-  color: white;
+  /*background: #838383;*/
+  /*color: white;*/
 }
 
 .splitter {
@@ -33,27 +32,165 @@
 .panel-right {
   flex: 1 1 auto;
   /* resizable */
-  padding: 10px;
+  padding: 5px 10px 10px 10px;
   width: 50%;
-  min-height: 100vh;
-  background: #eee;
+  min-height: 95vh;
+  background: #fff;
   overflow: auto;
 }
 
-</style>
-<label>Horizontal Splitter Panes:</label>
-<div class="container-fluid">
-    <div class="panel-container">
+textarea {
+    width: 100%;
+    height: 100%;
+    border: none;
+    overflow: auto;
+    outline: none;
+    resize: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    padding-top: 10px;
+    border-top:1px solid silver;
+}
 
-        <div class="panel-left" id="editor" contenteditable="true">
-            
+#viewer{
+    padding-top: 10px;
+    border-top:1px solid silver;
+}
+
+.wordwrap { 
+   white-space: pre-wrap;      /* CSS3 */   
+   white-space: -moz-pre-wrap; /* Firefox */    
+   white-space: -pre-wrap;     /* Opera <7 */   
+   white-space: -o-pre-wrap;   /* Opera 7 */    
+   word-wrap: break-word;      /* IE */
+}
+
+.sub_nav{
+    padding: 2px 5px 5px 5px; 
+    background-color: #fff;
+    text-align: center;
+    letter-spacing: 3px;
+    font-size: 1em;
+}
+
+
+.saveDoc{
+    background-color: #424242;
+    color: #fff;
+}
+/*----- TREE CSS -------*/
+
+/* Make the <ul>  <li> skeleton look like a TREE list*/
+#tree {
+    margin: 10px 0 0 2em;
+}
+
+#tree > li {
+    padding-bottom: 3px;
+}
+
+#tree  li > a {
+    color: #000;
+    text-decoration: none;
+}
+
+#tree li ul {
+    margin: 0.5em 0.5em 0.5em 2em;
+    /*display: none;*/
+    list-style-type: none;
+}
+
+</style>
+<div class="container-fluid" id="markdown_container">
+    <div class="top-nav">
+        <small>COPYRIGHT &copy; 2016 by Dockety.inc</small>
+    </div>
+    <form method="post" action="/save-doc/markdown"> 
+    <input type="hidden" class="si_input" name="typee" value="wysiwyg">
+    <div class="row">
+        <div class="col-md-6">
+            <input type="hidden" class="si_input" name="_id" id="_id" value="">
+            <div class="form-group">
+                <input type="text" class="form-control si_input" name="title" id="title" placeholder="Summary of the document" value="Untitled_<%= title %>.md">
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control si_input" name="tags" id="tags" placeholder="Tag-1, Tag-2, Tag-n  (Comma separated)">
+            </div>
+        </div>
+        <input type="hidden" name="doctype" value="md" class="si_input">
+        <div class="col-md-6">
+            <div class="col-md-3">
+                <div class="radio">
+                    <label><input type="checkbox" name="austo_save"> Turn auto-save</label>
+                </div>
+            </div>
+            <div class="col-md-9">
+                <!-- <h3 class="text-center">Markdown editor</h3> -->
+                <ul id="main-nav" class="pull-right">
+                    <a href="/markdown" target="_blank"><li>New document</li></a>
+                    <a href="/dashboard" target="_blank"><li>Dashboard</li></a>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-10">
+            <div class="form-group">
+                <input type="text" class="form-control si_docLocation si_input" name="path" readonly id="location" placeholder="Location is not set yet! (Click on 'Set Location' button) =>">
+            </div>
+        </div>
+        <div class="col-md-2">
+            <button class="btn btn-default pull-left" id="set_location">Set location</button>&nbsp;
+            <button class="btn btn-default saveDoc" >Save</button>
+        </div>
+    </div>
+    
+    <div class="panel-container">
+        <div class="panel-left" >
+            <div class="sub_nav">Editor</div>
+            <div id="summernote"></div>
+            <!-- <textarea id="" name="content" class="si_input"></textarea> -->
         </div>
 
         <div class="splitter">
         </div>
 
-        <div class="panel-right" id="viewer">
-            right panel
+        <div class="panel-right">
+            <div class="sub_nav">Viewport</div>
+            <div id="viewer" class="wordwraps"></div>
         </div>
-  	</div>
+    </div>
+  </form>
+</div>
+
+<!-- =============== MODAL SECTION ================ -->
+
+<div id="SaveAs" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Save document <small>(Click where you want to save the document)</small></h4>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="async_flag" value="false">
+                <div class="row tree_cont" style="overflow: scroll; padding: 10px 15px; height: 400px;">
+                     Please wait <i class="fa fa-refresh fa-spin fa-fw"></i>
+                </div>
+                <div class="row">
+                    <div class="input-group">
+                        <span class="input-group-addon" id="basic-addon1">Doc-title</span>
+                        <input type="text" class="form-control si_doctitle" placeholder="Title is defined" value="Untitled" aria-describedby="basic-addon1">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon" >Location</span>
+                        <input type="text" class="form-control si_docLocation" readonly placeholder="Not set yet." aria-describedby="basic-addon1">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default saveDoc saveDoc-modal" data-dismiss="modal">Save document</button>
+            </div>
+        </div>
+    </div>
 </div>

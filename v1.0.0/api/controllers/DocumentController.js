@@ -119,14 +119,15 @@ module.exports = {
 			var _id = randomID(30);
 			var data_e = {
 				_id: _id,
+				doctype: raw.typee,
 				title: raw.title,
 				parent: p_arr[(p_arr.length - 1)],
 				body: raw.content,
 				path: raw.path,
-				tags: raw.tags.split(',')
+				tags: tags
 			}
 			if(raw._id){
-				// console.log("id: "+raw._id)
+				data_e['_id'] = raw._id;
 				User.count({_id: uid,'articles._id': raw._id, 'articles.parent': data_e.parent}, function(err, count){
 					if(count == 1){
 						User.update({_id: uid }
@@ -176,6 +177,12 @@ module.exports = {
 	},
 
 	wysiwygPage: function(req, res){
-		return res.view('editors/wysiwyg',{layout: 'layout_wysiwyg'});
+		var chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOP1234567890";
+	    var newstr = "";
+	    for (var x = 0; x < 8; x++) {
+	        var i = Math.floor(Math.random() * chars.length);
+	        newstr += chars.charAt(i);
+	    }
+		return res.view('editors/wysiwyg',{title: newstr, layout: 'layout_wysiwyg'});
 	} 
 }
