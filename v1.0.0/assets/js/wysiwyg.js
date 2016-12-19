@@ -11,7 +11,7 @@ $(function(){
 
     // ====================== Initing  WYSIWYG
 
-    $('#summernote').summernote({
+    $('#wysiwygeditor').summernote({
       callbacks: {                    
           // onImageUpload : function(file, editor, welEditable) {
           //   console.log('initiated')

@@ -102,7 +102,7 @@ textarea {
 }
 
 </style>
-<div class="container-fluid" id="markdown_container">
+<div class="container-fluid editors" id="markdown_container">
     <div class="top-nav">
         <small>COPYRIGHT &copy; 2016 by Dockety.inc</small>
     </div>
@@ -112,7 +112,7 @@ textarea {
         <div class="col-md-6">
             <input type="hidden" class="si_input" name="_id" id="_id" value="">
             <div class="form-group">
-                <input type="text" class="form-control si_input" name="title" id="title" placeholder="Summary of the document" value="Untitled_<%= title %>.md">
+                <input type="text" class="form-control si_input" name="title" id="title" placeholder="Summary of the document" value="Untitled_<%= title %>.wysiwyg">
             </div>
             <div class="form-group">
                 <input type="text" class="form-control si_input" name="tags" id="tags" placeholder="Tag-1, Tag-2, Tag-n  (Comma separated)">
@@ -147,7 +147,7 @@ textarea {
     <div class="panel-container">
         <div class="panel-left" >
             <div class="sub_nav">Editor</div>
-            <div id="summernote"></div>
+            <div id="wysiwygeditor"></div>
             <!-- <textarea id="" name="content" class="si_input"></textarea> -->
         </div>
 

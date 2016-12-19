@@ -23,7 +23,6 @@ module.exports.routes = {
   '/dashboard': 'UserController.getDashboardView',
 
   '/learn/markdown': function(req, res){ return res.view('static/markdown_guide')},
-  // 'post /createNew': 'DocumentController.createNew',
   'post /rest/get-tree': 'DocumentController.view', // ASYNC
   'post /rest/save-doc' : 'DocumentController.createNew'
 
