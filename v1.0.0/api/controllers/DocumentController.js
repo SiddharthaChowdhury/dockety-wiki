@@ -37,6 +37,7 @@ module.exports = {
 		  	var parentNode = GetTheParentNodeChildArray(node.path, treeNodes) || treeNodes;
 
 		  	parentNode.push({
+		  		_id: node._id,
 		    	title: node.title,
 		    	path: node.path,
 		    	children: []
@@ -163,7 +164,6 @@ module.exports = {
 				});
 			}
 		}
-			
 	},
 
 	markdownPage: function(req, res){

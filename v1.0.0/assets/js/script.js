@@ -1,71 +1,35 @@
 $(function(){
-    // Preload TREE
-    // https://jsfiddle.net/Austin4Silvers/jjn9rh70/10/
-    // 
- //    var MenuTree = {
- //        collapse: function(element) {
- //            element.slideToggle(200);
- //        },
- //        init: function() {
- //            $('a', '#tree').each(function() {
- //                var $a = $(this);
- //                var $li = $a.parent();
- //                if ($a.next().is('ul')) {
- //                    var $ul = $a.next();
- //                    $(document).on('click', $a, function(e){
- //                        e.preventDefault();
- //                        MenuTree.collapse($ul);
- //                        $a.toggleClass('active');
- //                    });
- //                }
- //            });
+    // ------------------------ COMMON JS -----------------------------
 
- //        }
- //    };
+    function render_tree(tree_data){
+        var dom = '<ul id="tree">'
+                dom+= '<li><a href="#" data-docId="root" data-path="/Home/" class="si_getPath" ><i class="fa fa-home" aria-hidden="true"></i> Home</li>';
+                function get_tree(tree_data){
+                    dom += '<ul>';
+                        for(var i in tree_data){
+                            if(tree_data[i].children.length > 0){
+                                dom += '<li>';
+                                    dom += '<a href="#" data-docId="'+tree_data[i]._id+'" data-path="'+tree_data[i].path.replace('root', 'Home')+'/'+tree_data[i].title+'/" class="si_getPath" ><i class="fa fa-angle-double-right" aria-hidden="true"></i> '+tree_data[i].title+'</a>';
+                                    get_tree(tree_data[i].children);
+                                dom += '<li>';
+                            }
+                            else{
+                                dom += '<li><a href="#" data-docId="'+tree_data[i]._id+'" data-path="'+tree_data[i].path.replace('root', 'Home')+'/'+tree_data[i].title+'/" class="si_getPath" > <i class="fa fa-angle-right" aria-hidden="true"></i> '+tree_data[i].title+'</a></li>'
+                            }
+                        }
+                    dom+= '</ul>'
+                }
+                get_tree(tree_data);
+            dom+= '</ul>';
+        return dom;
+    }
 
- //    if($('#tree').length > 0 ){
+    $('.tip-close').click(function(e){
+        $(this).closest('.tip').slideUp(300);
+    });
 
- //        MenuTree.init();
+    // ------------------------------EDITORS [WYSIWYG & Markdown] -------------------------------
 
- //        // initiating context-menu
- //        var x = new _contextMenu();              
- //        x.config({                               
- //              contextBoxClass : 'context-box',
- //              clickedOnClass : 'get_context_menu',
- //              closeBtnClass : '_close',
- //              // popupBesideClass : 'className',
- //              // disableErrorLog: true,
- //              box_position : 'bot-left',
- //              displacement_px : [10,0]
- //        })
- //        x.run();
-
- //        $('.get_context_menu').click(function(){
- //            var path = $(this).attr('data-path');
- //            $('.context-box').find('.create_new_btn').attr('data-path', path);
- //        })
- //    }
-
-	// if($('#document_view').length == 1){
-
- //        $('.create_new_btn').click(function(e){
- //            var path = $(this).attr('data-path');
- //            $('#createNewModal').find('#path').val(path);
- //            path = path.substr(1).replace('root', '<i class="glyphicon glyphicon-home"></i>')+"/?"
- //            $('#createNewModal').find('.modal_mike').html( "New document in "+'<small>'+path+'</small>' );
- //            $('#createNewModal').find('.form-control').val("");
- //            $('.context-box').hide();
- //        });
-
- //        $('#createNewtypeForm').validate({
- //            rules: {
- //                title: "required",
- //                summary:{
- //                    required: true
- //                }
- //            }
- //        })
-	// }
 
     if($('.editors').length > 0){
         //======================= Facilate <TAB> press on editor
@@ -167,30 +131,6 @@ $(function(){
                 $('#SaveAs').modal('show');
         }
 
-        function render_tree(tree_data){
-            // var tree_data = JSON.parse($('pre').text());
-            var dom = '<ul id="tree">'
-                    dom+= '<li><a href="#" data-path="/Home/" class="si_getPath" ><i class="fa fa-home" aria-hidden="true"></i> Home</li>';
-                    function get_tree(tree_data){
-                        dom += '<ul>';
-                            for(var i in tree_data){
-                                if(tree_data[i].children.length > 0){
-                                    dom += '<li>';
-                                        dom += '<a href="#" data-path="'+tree_data[i].path.replace('root', 'Home')+'/'+tree_data[i].title+'/" class="si_getPath" ><i class="fa fa-angle-double-right" aria-hidden="true"></i> '+tree_data[i].title+'</a>';
-                                        get_tree(tree_data[i].children);
-                                    dom += '<li>';
-                                }
-                                else{
-                                    dom += '<li><a href="#" data-path="'+tree_data[i].path.replace('root', 'Home')+'/'+tree_data[i].title+'/" class="si_getPath" > <i class="fa fa-angle-right" aria-hidden="true"></i> '+tree_data[i].title+'</a></li>'
-                                }
-                            }
-                        dom+= '</ul>'
-                    }
-                    get_tree(tree_data);
-                dom+= '</ul>';
-            return dom;
-        }
-
         $('.saveDoc').click(function(e){
             e.preventDefault();
             if($(this).hasClass('saveDoc-modal'))
@@ -202,6 +142,31 @@ $(function(){
             e.preventDefault();
             $('.si_docLocation').val($(this).attr('data-path'))
         });
+    }
+
+    // ------------------------------ ASYNC[Tree container] -------------------------------
+
+
+    if($('.tree_container').length > 0 ){
+        setTimeout(function(){ 
+                $.ajax({
+                    url: '/rest/get-tree',
+                    type: "POST",
+                    data: {type:'async'},
+                    success: function(data) {
+                        var tree = render_tree(data);
+                        $('.tree_container').html(tree);
+                        $('.tree_container').find('li').each(function(){
+                            if($(this).text() == '')
+                                $(this).remove()
+                        })
+                    },
+                    error: function(err) {
+                        var warning = '<h5><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Could\'nt reach out for help. Please check your internet connection </h5>'
+                        $('.tree_container').html(warning);
+                    }
+                });
+        }, 1000);
     }
 
 })
