@@ -167,6 +167,12 @@ $(function(){
                     }
                 });
         }, 1000);
+
+        $(document).on('click', '.si_getPath', function(e){
+            e.preventDefault();
+            var doc_id = $(this).attr('data-docid') 
+            window.location = '/edit-doc/'+doc_id;
+        })
     }
 
 })

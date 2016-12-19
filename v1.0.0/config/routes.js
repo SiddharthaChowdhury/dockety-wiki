@@ -24,7 +24,8 @@ module.exports.routes = {
 
   '/learn/markdown': function(req, res){ return res.view('static/markdown_guide')},
   'post /rest/get-tree': 'DocumentController.view', // ASYNC
-  'post /rest/save-doc' : 'DocumentController.createNew'
+  'post /rest/save-doc' : 'DocumentController.createNew',
+  '/edit-doc/:docid': function(req, res){ return res.json(req.params.all()) },
 
   /***************************************************************************
   *                                                                          *
