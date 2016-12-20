@@ -67,7 +67,7 @@ module.exports = {
     						req.session.User = data[0];
     						req.session.isAuthPassed = true;
     						// console.log(req.session.User)
-    						return res.redirect('/dashboard');
+    						return res.redirect('/dashboard', {title: "Dashboard"});
     					}
     					else{
 	    					req.addFlash('login_error', 'Email / Password was invalid.');

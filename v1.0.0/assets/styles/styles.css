@@ -35,6 +35,14 @@ button, .btn{
     color: #333;
 }
 /*------------PRIVATE ---------------*/
+.a{
+    text-decoration: none !important;
+    color: #333;
+}
+.a:hover{
+    color: #000;
+} 
+
 .top-nav{
     padding: 7px 12px;
     font-size: 0.7em;
@@ -44,14 +52,16 @@ button, .btn{
 #main-nav{
     list-style-type: none;
 }
-#main-nav li {
+#main-nav .menu-itm, .new-doc-btn {
     display: inline-block;
     background-color: #E6E6E6;
     color: #333;
     padding: 5px 9px;
     cursor: pointer;
 }
-#main-nav li:hover {
+#main-nav .menu-itm:hover, .new-doc-btn:hover {
     background-color: #848484;
     color: #f1f1f1;
 }
+
+
