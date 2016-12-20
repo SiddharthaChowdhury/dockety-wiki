@@ -17,15 +17,15 @@ module.exports.routes = {
   'post /login/user': 'UserController.loginUser',
 
 
-  '/documents': 'DocumentController.view',
+  // '/documents': 'DocumentController.view',
   '/markdown': 'DocumentController.markdownPage',
   '/wysiwyg': 'DocumentController.wysiwygPage',
   '/dashboard': 'UserController.getDashboardView',
 
   '/learn/markdown': function(req, res){ return res.view('static/markdown_guide')},
-  'post /rest/get-tree': 'DocumentController.view', // ASYNC
+  'post /rest/get-tree': 'DocumentController.getTree', // ASYNC
   'post /rest/save-doc' : 'DocumentController.createNew',
-  '/edit-doc/:docid': function(req, res){ return res.json(req.params.all()) },
+  '/private-preview-doc/:docid': 'DocumentController.privatePreview',
 
   /***************************************************************************
   *                                                                          *

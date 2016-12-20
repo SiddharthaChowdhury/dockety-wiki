@@ -3,7 +3,7 @@ $(function(){
 
     function render_tree(tree_data){
         var dom = '<ul id="tree">'
-                dom+= '<li><a href="#" data-docId="root" data-path="/Home/" class="si_getPath" ><i class="fa fa-home" aria-hidden="true"></i> Home</li>';
+                dom+= '<li><a href="javascript:;" data-docId="root" data-path="/Home/" class="si_getPath"><i class="fa fa-home" aria-hidden="true"></i> Home</li>';
                 function get_tree(tree_data){
                     dom += '<ul>';
                         for(var i in tree_data){
@@ -27,6 +27,8 @@ $(function(){
     $('.tip-close').click(function(e){
         $(this).closest('.tip').slideUp(300);
     });
+
+    $('[data-toggle="tooltip"]').tooltip(); 
 
     // ------------------------------EDITORS [WYSIWYG & Markdown] -------------------------------
 
@@ -171,7 +173,8 @@ $(function(){
         $(document).on('click', '.si_getPath', function(e){
             e.preventDefault();
             var doc_id = $(this).attr('data-docid') 
-            window.location = '/edit-doc/'+doc_id;
+            if( doc_id != 'root' )
+                window.location = '/private-preview-doc/'+doc_id;
         })
     }
 

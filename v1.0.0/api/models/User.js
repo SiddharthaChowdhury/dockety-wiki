@@ -21,21 +21,6 @@ module.exports = {
 					type:String,
 					enum:['md', 'wysiwyg']
 				},
-				// comments:[
-				// 	{
-				// 		author: String, // slug
-				// 		desc:String,
-				// 		date:{
-				// 			type: Date,
-				// 			default: Date.now
-				// 		}
-				// 	}
-				// ],
-				// meta:{
-				// 	upvote: Number,
-				// 	downvote: Number,
-				// 	fabs: Number
-				// },
 				tags:[],
 				contributers: [{
 					name: String,
@@ -50,6 +35,10 @@ module.exports = {
 					type: String,
 					enum: ['public', 'private'],
 					default: 'private'
+				},
+				createdAt:{
+					type: Date,
+					default: Date.now
 				}
 			}
 		],

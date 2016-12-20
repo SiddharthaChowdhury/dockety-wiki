@@ -1,5 +1,5 @@
 module.exports = {
-	view: function(req, res){
+	getTree: function(req, res){
 		var uid = req.session.User._id;
 		User.find({_id: uid}, 'articles' , function(err, docs){
 			if(err) return res.negotiate(err);
@@ -184,5 +184,30 @@ module.exports = {
 	        newstr += chars.charAt(i);
 	    }
 		return res.view('editors/wysiwyg',{title: newstr, layout: 'layout_wysiwyg'});
-	} 
+	},
+
+	privatePreview: function(req, res){
+		var uid = req.session.User._id;
+		var raw = req.params.all();
+		if(!raw.docid){
+			return res.notFound();
+		}
+		else{
+			User.find({_id: uid, 'articles._id': raw.docid}, {'articles.$':1}, function(err, data){
+				if(err) return res.negotiate(err);
+				else{
+					var title = data[0].articles[0].title,
+						_id = data[0].articles[0]._id,
+						content = data[0].articles[0].body;
+
+					if(data[0].articles[0].doctype == 'md'){
+						var showdown  	= require('showdown'),
+						converter 		= new showdown.Converter();
+						content      	= converter.makeHtml(content);
+					}
+					return res.view('private/preview',{layout: 'layout_private', title: title, content: content, _id: _id});
+				}
+			})
+		}
+	},
 }

@@ -44,10 +44,6 @@
 }
 
 </style>
-<div class="container" id="markdown_container">
-    <div class="top-nav">
-        <small>COPYRIGHT &copy; 2016 by Dockety.inc</small>
-    </div>
     <div class="row">
         <div class="col-md-6">
         	<!-- Avatar -->
@@ -60,7 +56,7 @@
 	        </div>
 	        <!-- User info -->
 	        <div class="col-md-9">
-	        	<div class="h3"><%= req.session.User.full_name %></div>
+	        	<span class="h3"><%= req.session.User.full_name %></span> &nbsp; &nbsp; &nbsp;<small class=""><a class="a" href="#"><i>( Logout )</i></a></small>
 	        	<div>~ <i><%= typeof req.session.User.about_me == 'undefined' ? 'No self summary added yet!': req.session.User.about_me %></i></div>
 	        	<small><%= req.session.User.email %></small>
 	        </div>
@@ -102,7 +98,7 @@
 	    	<h4>Your document tree</h4>
 	    	<div class="tip tip-default">
 	    		<i class="fa fa-lightbulb-o" aria-hidden="true"></i>
-	    		<b>Note: </b>&nbsp;Left click on document link to preview. 
+	    		<b>Note: </b>&nbsp;LClick on document to preview. 
 	    		<a href="#" class="tip-close"><i class="fa fa-times" aria-hidden="true"></i></a>
 	    	</div>
 	    	<div class="col-md-12 tree_container">
@@ -114,4 +110,4 @@
 	    	</div>
 	    </div>
 	</section>
-</div>
+
